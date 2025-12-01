@@ -1,0 +1,66 @@
+name: CD - Pipeline Automático (Staging -> Prod)
+
+on:
+  push:
+    branches: [ "staging", "main" ] 
+
+permissions:
+  contents: write 
+
+jobs:
+  deploy-staging:
+    name: 1. Deploy Staging
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/staging'
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - run: pip install -r requirements.txt && pip install pytest pytest-mock
+      
+      - name: Rodar Testes
+        env:
+          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+        run: pytest
+
+      - name: Acionar Render (Staging)
+        if: success()
+        run: curl "${{ secrets.STAGING_DEPLOY_HOOK }}"
+
+  promote-code:
+    name: 2. Promover Staging -> Main
+    needs: deploy-staging
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/staging' && success()
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 
+
+      - name: Configurar Git e Fazer Merge
+        run: |
+          git config --global user.name 'GitHub Actions Bot'
+          git config --global user.email 'actions@github.com'
+          
+          git checkout main
+          git pull origin main
+          
+          echo "Fazendo merge de Staging para Main..."
+          git merge origin/staging --no-edit
+          
+          echo "Enviando código atualizado para branch Main..."
+          git push origin main
+
+  deploy-production:
+    name: 3. Deploy Produção
+    if: always() && (needs.promote-code.result == 'success' || (needs.promote-code.result == 'skipped' && github.ref == 'refs/heads/main'))
+    needs: promote-code 
+    runs-on: ubuntu-latest
+    steps:
+      - name: Acionar Render (Produção)
+        run: |
+          echo "Iniciando Deploy em Produção..."
+          curl "${{ secrets.MAIN_DEPLOY_HOOK }}"
