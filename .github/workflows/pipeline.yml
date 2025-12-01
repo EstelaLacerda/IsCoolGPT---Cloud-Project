@@ -2,9 +2,9 @@ name: IsCoolGPT CI Pipeline
 
 on:
   push:
-    branches: [ "main", "development" ] 
+    branches: [ "development" ] 
   pull_request:
-    branches: [ "main", "staging" ] 
+    branches: [ "main", "staging" , "development" ] 
 
 jobs:
   quality-check:
