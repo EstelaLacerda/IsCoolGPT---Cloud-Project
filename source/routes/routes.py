@@ -36,7 +36,8 @@ def ask():
     Por favor, estruture sua resposta da seguinte maneira didática:
     1. 🎓 **Definição Simples**: Explique o que é isso em termos fáceis (como se explicasse para um iniciante).
     2. 🏢 **Analogia do Mundo Real**: Use uma metáfora do dia a dia (sem ser técnica) para ilustrar o conceito.
-    3. ☁️ **Exemplo Prático na Nuvem**: Cite como esse recurso se chama ou é usado nas principais nuvens (AWS, Azure ou Google Cloud).
+    3. ☁️ **Exemplo Prático na Nuvem**: Cite como esse recurso se chama ou é usado
+    nas principais nuvens (AWS, Azure ou Google Cloud).
     4. 💼 **Por que usar?**: Explique qual problema de negócio isso resolve.
 
     Mantenha o tom encorajador e técnico na medida certa.

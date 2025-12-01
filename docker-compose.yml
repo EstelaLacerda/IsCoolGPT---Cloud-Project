@@ -1,0 +1,18 @@
+version: '3.8' 
+
+services:
+  iscoolgpt-app:
+    build: .
+    
+    container_name: iscoolgpt_container
+    
+    ports:
+      - "5000:5000"
+    
+    env_file:
+      - .env
+    
+    volumes:
+      - .:/app
+    
+    restart: always
