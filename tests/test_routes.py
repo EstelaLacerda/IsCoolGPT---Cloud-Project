@@ -21,7 +21,7 @@ def test_ask_endpoint_no_data(client):
 
 
 def test_ask_endpoint_missing_topic(client):
- 
+
     payload = {"pergunta_errada": "Qualquer coisa"}
     response = client.post("/api/ask", json=payload)
 
@@ -31,13 +31,13 @@ def test_ask_endpoint_missing_topic(client):
 
 @patch("source.routes.routes.get_ai_response")
 def test_ask_endpoint_success(mock_get_ai, client):
- 
+
     mock_get_ai.return_value = "Esta é uma resposta simulada da IA."
 
     payload = {"topic": "Docker"}
     response = client.post("/api/ask", json=payload)
 
-    assert response.status_code == 200  
+    assert response.status_code == 200
     data = response.get_json()
     assert data["response"] == "Esta é uma resposta simulada da IA."
 
