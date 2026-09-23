@@ -91,3 +91,51 @@ Este projeto implementa uma estratégia avançada de gerenciamento de código e 
     O servidor iniciará em `http://localhost:5000`.
 
 ---
+
+## Como Testar em Produção
+
+A API já se encontra publicada e operando em ambiente de produção na nuvem através do Render. Você pode testar os endpoints diretamente sem a necessidade de rodar o projeto localmente.
+
+### Endpoint de Produção
+- **URL Base:** `https://iscoolgpt-cloud-project.onrender.com`
+- **Endpoint:** `/api/ask`
+- **Método HTTP:** `POST`
+- **Header:** `Content-Type: application/json`
+
+---
+
+### Passo a Passo para Teste
+
+Recomendamos o uso de clientes HTTP como **Postman**, **Insomnia** ou via linha de comando com **cURL**.
+
+#### 1. Usando Postman ou Insomnia
+
+1. Abra o **Postman** ou **Insomnia**.
+2. Crie uma nova requisição e defina o método como **`POST`**.
+3. Insira a URL do endpoint:
+   ```text
+   https://iscoolgpt-cloud-project.onrender.com/api/ask
+   ```
+4. Na aba **Headers**, certifique-se de definir:
+   - `Content-Type`: `application/json`
+5. Na aba **Body**, selecione a opção **raw** (formato **JSON**) e adicione o seguinte payload:
+   ```json
+   {
+     "topic": "S3 Buckets"
+   }
+   ```
+6. Clique em **Send**. O assistente processará a solicitação e retornará uma resposta estruturada contendo definições, analogias, exemplos na nuvem e casos de uso do tópico solicitado.
+
+---
+
+#### 2. Usando cURL (Terminal)
+
+Caso prefira testar via linha de comando, execute o seguinte comando no terminal:
+
+```bash
+curl -X POST https://iscoolgpt-cloud-project.onrender.com/api/ask \
+  -H "Content-Type: application/json" \
+  -d '{"topic": "S3 Buckets"}'
+```
+
+> **Nota:** Por estar hospedado em uma instância gratuita do Render, a primeira requisição pode levar alguns segundos adicionais para responder caso o servidor esteja em estado de hibernação (*cold start*).
